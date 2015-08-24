@@ -293,6 +293,31 @@ describe Dottie do
       end
     end
     
+    context 'array prepend/append' do
+      before :each do
+        @hash = { 'a' => 'b', 'c' => ['g', 'h', 'i'] }
+      end
+      
+      %w( - prepend >> ).each do |key|
+        it "prepends an array element with [#{key}]" do
+          Dottie.set(@hash, "c[#{key}]", 'f')
+          expect(@hash).to eq({ 'a' => 'b', 'c' => ['f', 'g', 'h', 'i'] })
+        end
+      end
+      %w( + append << ).each do |key|
+        it "appends an array element with [#{key}]" do
+          Dottie.set(@hash, "c[#{key}]", 'j')
+          expect(@hash).to eq({ 'a' => 'b', 'c' => ['g', 'h', 'i', 'j'] })
+        end
+      end
+      %w( - + prepend append  >> << ).each do |key|
+        it "creates an array at a non-existent key with [#{key}]" do
+          Dottie.set(@hash, "r[#{key}]", 's')
+          expect(@hash).to eq({ 'a' => 'b', 'c' => ['g', 'h', 'i'], 'r' => ['s'] })
+        end
+      end
+    end
+    
     context 'invalid' do
       before :each do
         @hash = { 'a' => 'b', 'c' => { 'd' => 'e' }, 'f' => ['g', 'h'] }

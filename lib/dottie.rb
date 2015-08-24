@@ -45,8 +45,17 @@ module Dottie
       # set the value if this is the last key part
       if i == key_parts.size - 1
         case obj
-        when Hash, Array
+        when Hash
           obj[k] = value
+        when Array
+          case k
+          when '-', 'prepend', '>>'
+            obj.unshift(value)
+          when '+', 'append', '<<'
+            obj << value
+          else
+            obj[k] = value
+          end
         else
           raise TypeError.new("expected Hash or Array but got #{obj.class.name}")
         end
@@ -55,7 +64,8 @@ module Dottie
         obj = case obj
         when Hash, Array
           # look ahead at the next key to see if an array should be created
-          if key_parts[i + 1].is_a?(Integer)
+          if key_parts[i + 1].is_a?(Integer) ||
+             key_parts[i + 1] =~ /\A(-|\+|prepend|append|>>|<<)\z/
             obj[k] ||= []
           else
             obj[k] ||= {}
@@ -63,7 +73,7 @@ module Dottie
         when nil
           # look at the key to see if an array should be created
           case k
-          when Integer
+          when Integer, '-', '+', 'prepend', 'append', '>>', '<<'
             obj[k] = []
           else
             obj[k] = {}

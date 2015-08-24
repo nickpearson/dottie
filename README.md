@@ -115,6 +115,13 @@ complex.hash # => {"a"=>[{"b"=>"x"}, {"d"=>"e"}]}
 # add another array element
 complex['a[2]'] = 'y'
 complex.hash # => {"a"=>[{"b"=>"x"}, {"d"=>"e"}, "y"]}
+
+# elements can also be prepended and appended to arrays
+complex['a[+]'] = 'z' # can also use 'a[<<]' and 'a[append]'
+complex.hash # => {"a"=>[{"b"=>"x"}, {"d"=>"e"}, "y", "z"]}
+
+complex['a[-]'] = 'p' # can also use 'a[>>]' and 'a[prepend]'
+complex.hash # => {"a"=>["p", {"b"=>"x"}, {"d"=>"e"}, "y", "z"]}
 ```
 
 ### Dottie Usage Options
