@@ -130,6 +130,51 @@ module Dottie
   end
   
   ##
+  # Flattens a Hash or Array to a single-depth Hash with Dottie-style keys.
+  
+  def self.flatten(obj, options = {}, path = nil, flat = nil)
+    path ||= []
+    flat ||= {}
+    case obj
+    when Hash
+      obj.each do |k, v|
+        this_path = path + [k]
+        case v
+        when Hash, Array
+          flat[this_path.join('.')] = options[:keys_only] ? nil : v if options[:intermediate]
+          Dottie.flatten(v, options, this_path, flat)
+        else
+          flat[this_path.join('.')] = options[:keys_only] ? nil : v
+        end
+      end
+    when Array
+      obj.each_with_index do |v, i|
+        this_path = path.dup
+        if this_path.any?
+          this_path[-1] = this_path[-1].to_s + "[#{i}]"
+        else
+          this_path = ["[#{i}]"]
+        end
+        case v
+        when Hash, Array
+          flat[this_path.join('.')] = options[:keys_only] ? nil : v if options[:intermediate]
+          Dottie.flatten(v, options, this_path, flat)
+        else
+          flat[this_path.join('.')] = options[:keys_only] ? nil : v
+        end
+      end
+    end
+    flat
+  end
+  
+  ##
+  # Gets an array of the Dottie-style keys that exist in a Hash or Array.
+  
+  def self.keys(obj, options = {})
+    Dottie.flatten(obj, { keys_only: true }.merge(options)).keys
+  end
+  
+  ##
   # Checks whether a key looks like a key Dottie understands.
   
   def self.dottie_key?(key)

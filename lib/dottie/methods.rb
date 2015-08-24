@@ -56,6 +56,20 @@ module Dottie
       end
     end
     
+    ##
+    # 
+    
+    def dottie_flatten
+      Dottie.flatten(wrapped_object_or_self)
+    end
+    
+    ##
+    # 
+    
+    def dottie_keys(intermediate = false)
+      Dottie.keys(wrapped_object_or_self, intermediate: intermediate)
+    end
+    
     private
       
       ##

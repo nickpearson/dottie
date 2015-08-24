@@ -287,4 +287,40 @@ describe Dottie::Freckle do
     
   end
   
+  describe 'flattening' do
+    
+    context 'hash' do
+      let(:freckle) { Dottie::Freckle.new({ 'a' => 'b', 'c' => { 'd' => ['e', 'f', 'g'] } }) }
+      
+      it 'flattens a hash' do
+        expect(freckle.dottie_flatten).to eq({ 'a' => 'b', 'c.d[0]' => 'e', 'c.d[1]' => 'f', 'c.d[2]' => 'g' })
+      end
+      it 'gets flattened hash keys' do
+        expect(freckle.dottie_keys).to eq ['a', 'c.d[0]', 'c.d[1]', 'c.d[2]']
+      end
+      it 'gets all flattened hash keys' do
+        expect(freckle.dottie_keys(true)).to eq ['a', 'c', 'c.d', 'c.d[0]', 'c.d[1]', 'c.d[2]']
+      end
+    end
+    
+    context 'array' do
+      let(:freckle) { Dottie::Freckle.new(['x', { 'a' => 'b', 'c' => { 'd' => ['e', 'f', 'g'] } }, 'y']) }
+      
+      it 'flattens an array' do
+        expect(freckle.dottie_flatten).to eq({
+          '[0]' => 'x',
+          '[1].a' => 'b', '[1].c.d[0]' => 'e', '[1].c.d[1]' => 'f', '[1].c.d[2]' => 'g',
+          '[2]' => 'y' })
+      end
+      it 'gets flattened array keys' do
+        expect(freckle.dottie_keys).to eq ['[0]', '[1].a', '[1].c.d[0]', '[1].c.d[1]', '[1].c.d[2]', '[2]']
+      end
+      it 'gets all flattened array keys' do
+        expect(freckle.dottie_keys(true)).to eq [
+          '[0]', '[1]', '[1].a', '[1].c', '[1].c.d', '[1].c.d[0]', '[1].c.d[1]', '[1].c.d[2]', '[2]']
+      end
+    end
+    
+  end
+  
 end
