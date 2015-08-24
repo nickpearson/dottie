@@ -10,7 +10,11 @@ module Dottie
   # Creates a new Dottie::Freckle from a standard Ruby Hash or Array.
   
   def self.[](obj)
-    Dottie::Freckle.new(obj)
+    if obj.is_a?(Dottie::Freckle)
+      obj
+    else
+      Dottie::Freckle.new(obj)
+    end
   end
   
   ##

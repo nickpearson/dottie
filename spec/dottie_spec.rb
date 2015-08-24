@@ -20,6 +20,22 @@ describe Dottie do
       arr = ['a', 'b', 'c']
       expect(Dottie(arr)).to be_a Dottie::Freckle
     end
+    it 'returns a Dottie::Freckle<Hash> instead of rewrapping it using Dottie[]' do
+      dottie = Dottie[{ 'a' => 'b' }]
+      expect(Dottie[dottie]).to eq dottie
+    end
+    it 'returns a Dottie::Freckle<Array> instead of rewrapping it using Dottie[]' do
+      dottie = Dottie[['a', 'b', 'c']]
+      expect(Dottie[dottie]).to eq dottie
+    end
+    it 'returns a Dottie::Freckle<Hash> instead of rewrapping it using Dottie()' do
+      dottie = Dottie({ 'a' => 'b' })
+      expect(Dottie(dottie)).to eq dottie
+    end
+    it 'returns a Dottie::Freckle<Array> instead of rewrapping it using Dottie()' do
+      dottie = Dottie(['a', 'b', 'c'])
+      expect(Dottie(dottie)).to eq dottie
+    end
     ['a', nil, 1].each do |val|
       it "fails to create a Dottie::Freckle from an invalid type (#{val.class}) using Dottie[]" do
         expect{ Dottie[val] }.to raise_error(TypeError)
