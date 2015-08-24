@@ -2,6 +2,22 @@ require 'spec_helper'
 
 describe Dottie::Freckle do
   
+  describe 'instantiation' do
+    
+    it 'creates a Dottie::Freckle from a Hash' do
+      expect(Dottie::Freckle.new({ 'a' => 'b' })).to be_a Dottie::Freckle
+    end
+    it 'creates a Dottie::Freckle from an Array' do
+      expect(Dottie::Freckle.new(['a', 'b', 'c'])).to be_a Dottie::Freckle
+    end
+    ['a', nil, 1].each do |val|
+      it "fails to create a Dottie::Freckle from an invalid type (#{val.class})" do
+        expect{ Dottie::Freckle.new(val) }.to raise_error(TypeError)
+      end
+    end
+    
+  end
+  
   describe 'general' do
     
     context 'Hash' do

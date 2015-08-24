@@ -6,7 +6,12 @@ module Dottie
     # Creates a new Freckle to wrap the supplied object.
     
     def initialize(obj)
-      @_wrapped_object = obj
+      case obj
+      when Hash, Array
+        @_wrapped_object = obj
+      else
+        raise TypeError, 'must be a Hash or Array'
+      end
     end
     
     ##

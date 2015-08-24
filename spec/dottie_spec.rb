@@ -20,6 +20,14 @@ describe Dottie do
       arr = ['a', 'b', 'c']
       expect(Dottie(arr)).to be_a Dottie::Freckle
     end
+    ['a', nil, 1].each do |val|
+      it "fails to create a Dottie::Freckle from an invalid type (#{val.class}) using Dottie[]" do
+        expect{ Dottie[val] }.to raise_error(TypeError)
+      end
+      it "fails to create a Dottie::Freckle from an invalid type (#{val.class}) using Dottie()" do
+        expect{ Dottie(val) }.to raise_error(TypeError)
+      end
+    end
     
   end
   
