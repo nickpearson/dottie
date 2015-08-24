@@ -57,6 +57,17 @@ module Dottie
     end
     
     ##
+    # Deletes the value at the specified key and returns it.
+    
+    def delete(key)
+      if Dottie.dottie_key?(key)
+        Dottie.delete(wrapped_object_or_self, key)
+      else
+        super
+      end
+    end
+    
+    ##
     # 
     
     def dottie_flatten

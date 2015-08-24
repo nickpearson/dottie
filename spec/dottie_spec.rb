@@ -340,6 +340,74 @@ describe Dottie do
     
   end
   
+  describe 'deleting' do
+    
+    context 'simple' do
+      before :each do
+        @hash = { 'a' => 'b', 'c' => { 'd' => 'e' } }
+      end
+      
+      it 'deletes a standard key' do
+        ret = Dottie.delete(@hash, 'c')
+        expect(ret).to eq({ 'd' => 'e' })
+        expect(@hash).to eq({ 'a' => 'b' })
+      end
+      it 'deletes a dotted key' do
+        ret = Dottie.delete(@hash, 'c.d')
+        expect(ret).to eq 'e'
+        expect(@hash).to eq({ 'a' => 'b', 'c' => {} })
+      end
+      it 'returns nil when attempting to delete a non-existent standard key' do
+        ret = Dottie.delete(@hash, 'x')
+        expect(ret).to be_nil
+        expect(@hash).to eq({ 'a' => 'b', 'c' => { 'd' => 'e' } })
+      end
+      it 'returns nil when attempting to delete a non-existent dotted key' do
+        ret = Dottie.delete(@hash, 'x.y')
+        expect(ret).to be_nil
+        expect(@hash).to eq({ 'a' => 'b', 'c' => { 'd' => 'e' } })
+      end
+    end
+    
+    context 'array indexes' do
+      before :each do
+        @hash = { 'a' => 'b', 'c' => [{ 'd' => 'e', 'f' => 'g' }, { 'h' => 'i' }] }
+      end
+      
+      it 'deletes an element from an array (positive index)' do
+        ret = Dottie.delete(@hash, 'c[0]')
+        expect(ret).to eq({ 'd' => 'e', 'f' => 'g' })
+        expect(@hash).to eq({ 'a' => 'b', 'c' => [{ 'h' => 'i' }] })
+      end
+      it 'deletes an element from an array (negative index)' do
+        ret = Dottie.delete(@hash, 'c[-1]')
+        expect(ret).to eq({ 'h' => 'i' })
+        expect(@hash).to eq({ 'a' => 'b', 'c' => [{ 'd' => 'e', 'f' => 'g' }] })
+      end
+      it 'deletes an element from an array (first)' do
+        ret = Dottie.delete(@hash, 'c[first]')
+        expect(ret).to eq({ 'd' => 'e', 'f' => 'g' })
+        expect(@hash).to eq({ 'a' => 'b', 'c' => [{ 'h' => 'i' }] })
+      end
+      it 'deletes an element from an array (last)' do
+        ret = Dottie.delete(@hash, 'c[last]')
+        expect(ret).to eq({ 'h' => 'i' })
+        expect(@hash).to eq({ 'a' => 'b', 'c' => [{ 'd' => 'e', 'f' => 'g' }] })
+      end
+      it 'deletes an element from a nested structure' do
+        ret = Dottie.delete(@hash, 'c[0].d')
+        expect(ret).to eq('e')
+        expect(@hash).to eq({ 'a' => 'b', 'c' => [{ 'f' => 'g' }, { 'h' => 'i' }] })
+      end
+      it 'returns nil when attempting to delete a non-existent array index' do
+        ret = Dottie.delete(@hash, 'c[3]')
+        expect(ret).to be_nil
+        expect(@hash).to eq({ 'a' => 'b', 'c' => [{ 'd' => 'e', 'f' => 'g' }, { 'h' => 'i' }] })
+      end
+    end
+    
+  end
+  
   describe 'flattening' do
     
     context 'hash' do

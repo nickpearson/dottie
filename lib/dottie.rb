@@ -130,6 +130,26 @@ module Dottie
   end
   
   ##
+  # Deletes the value at the specified key and returns it.
+  
+  def self.delete(obj, key)
+    if Dottie.has_key?(obj, key)
+      key_parts = Dottie.key_parts(key)
+      if key_parts.size > 1
+        key = Dottie.build_key(key_parts[0..-2])
+        obj = Dottie.get(obj, key)
+      end
+      if obj.is_a?(Array) && key_parts.last.is_a?(Fixnum)
+        obj.delete_at(key_parts.last)
+      else
+        obj.delete(key_parts.last)
+      end
+    else
+      nil
+    end
+  end
+  
+  ##
   # Flattens a Hash or Array to a single-depth Hash with Dottie-style keys.
   
   def self.flatten(obj, options = {}, path = nil, flat = nil)

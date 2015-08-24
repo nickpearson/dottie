@@ -122,6 +122,14 @@ complex.hash # => {"a"=>[{"b"=>"x"}, {"d"=>"e"}, "y", "z"]}
 
 complex['a[-]'] = 'p' # can also use 'a[>>]' and 'a[prepend]'
 complex.hash # => {"a"=>["p", {"b"=>"x"}, {"d"=>"e"}, "y", "z"]}
+
+# use delete as you would on a Hash
+complex.delete('a[1].b') # => "x"
+complex.hash # => {"a"=>["p", {}, {"d"=>"e"}, "y", "z"]}
+
+# delete an element at an array index
+complex.delete('a[1]') # => {}
+complex.hash # => {"a"=>["p", {"d"=>"e"}, "y", "z"]}
 ```
 
 ### Dottie Usage Options
