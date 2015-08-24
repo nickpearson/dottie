@@ -499,6 +499,34 @@ describe Dottie do
     
   end
   
+  describe 'key building' do
+    
+    it 'builds a single-element key' do
+      expect(Dottie.build_key(['a'])).to eq 'a'
+    end
+    
+    it 'builds a dotted key' do
+      expect(Dottie.build_key(['a', 'b', 'c'])).to eq 'a.b.c'
+    end
+    
+    it 'builds a dotted key a number' do
+      expect(Dottie.build_key(['a', '0', '1', 'b'])).to eq 'a.0.1.b'
+    end
+    
+    it 'builds a complex key with a positive integer' do
+      expect(Dottie.build_key(['a', 0, 'b'])).to eq 'a[0].b'
+    end
+    
+    it 'builds a complex key with a negative integer' do
+      expect(Dottie.build_key(['a', -1, 'b'])).to eq 'a[-1].b'
+    end
+    
+    it 'builds a complex key with consecutive integers' do
+      expect(Dottie.build_key(['a', 0, 1, 'b'])).to eq 'a[0][1].b'
+    end
+    
+  end
+  
   describe 'key format variants' do
     let(:arr) { ['a', 0, 'b', 1, 'c', -2, 'd', -1, 'e'] }
     

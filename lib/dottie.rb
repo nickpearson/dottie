@@ -211,4 +211,21 @@ module Dottie
     end
   end
   
+  ##
+  # Builds a Dottie key from an Array of strings and integers.
+  
+  def self.build_key(parts)
+    key = ''
+    parts.each_with_index do |part, i|
+      case part
+      when String
+        key << '.' unless i == 0
+        key << part
+      when Fixnum
+        key << "[#{part}]"
+      end
+    end
+    key
+  end
+  
 end
