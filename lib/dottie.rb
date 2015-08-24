@@ -25,6 +25,8 @@ module Dottie
     Dottie.key_parts(key).each do |k|
       obj = case obj
       when Hash, Array
+        # use an array index if it appears that's what was intended
+        k = k.to_i if obj.is_a?(Array) && k.to_i.to_s == k
         obj[k]
       else
         nil

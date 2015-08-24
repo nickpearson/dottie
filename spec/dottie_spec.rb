@@ -144,6 +144,20 @@ describe Dottie do
       end
     end
     
+    context 'lax keys' do
+      let(:hash) {{ 'a' => 'b', 'c' => [{ 'd' => 'e', '0' => 1 }, { 'f' => 'g' }] }}
+      
+      it 'reads a targeted array index number as an integer' do
+        expect(Dottie.get(hash, 'c.0.d')).to eq 'e'
+      end
+      it 'reads a targeted hash key number as a string' do
+        expect(Dottie.get(hash, 'c.0.0')).to eq 1
+      end
+      it 'reads an targeted hash key integer as an integer' do
+        expect(Dottie.get(hash, 'c.0[0]')).to be_nil
+      end
+    end
+    
   end
   
   describe 'key existence' do
