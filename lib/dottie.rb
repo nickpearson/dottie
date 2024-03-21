@@ -139,7 +139,7 @@ module Dottie
         key = Dottie.build_key(key_parts[0..-2])
         obj = Dottie.get(obj, key)
       end
-      if obj.is_a?(Array) && key_parts.last.is_a?(Fixnum)
+      if obj.is_a?(Array) && key_parts.last.is_a?(Integer)
         obj.delete_at(key_parts.last)
       else
         obj.delete(key_parts.last)
@@ -241,7 +241,7 @@ module Dottie
       when String
         key << '.' unless i == 0
         key << part
-      when Fixnum
+      when Integer
         key << "[#{part}]"
       end
     end
