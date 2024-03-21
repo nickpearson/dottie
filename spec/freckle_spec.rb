@@ -147,28 +147,28 @@ describe Dottie::Freckle do
     let(:freckle) { Dottie::Freckle.new({ 'a' => 'b', 'c' => { 'd' => ['e', 'f', 'g'] } }) }
     
     it "finds a standard key" do
-      expect(freckle.has_key?('a')).to be_true
+      expect(freckle.has_key?('a')).to be true
     end
     it "does not find a missing standard key" do
-      expect(freckle.has_key?('x')).to be_false
+      expect(freckle.has_key?('x')).to be false
     end
     it "finds a Dottie key (Hash value)" do
-      expect(freckle.has_key?('c.d')).to be_true
+      expect(freckle.has_key?('c.d')).to be true
     end
     it "finds a Dottie key (Array element)" do
-      expect(freckle.has_key?('c.d[0]')).to be_true
+      expect(freckle.has_key?('c.d[0]')).to be true
     end
     it "does not find a missing Dottie key (first part is a String)" do
-      expect(freckle.has_key?('a.b')).to be_false
+      expect(freckle.has_key?('a.b')).to be false
     end
     it "does not find a missing Dottie key (first part exists)" do
-      expect(freckle.has_key?('c.x')).to be_false
+      expect(freckle.has_key?('c.x')).to be false
     end
     it "does not find a missing Dottie key (outside Array bounds)" do
-      expect(freckle.has_key?('c.d[4]')).to be_false
+      expect(freckle.has_key?('c.d[4]')).to be false
     end
     it "does not find a missing Dottie key (no part exists)" do
-      expect(freckle.has_key?('x.y')).to be_false
+      expect(freckle.has_key?('x.y')).to be false
     end
   end
   

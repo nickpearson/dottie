@@ -164,28 +164,28 @@ describe Dottie do
     let(:hash) {{ 'a' => 'b', 'c' => { 'd' => ['e', 'f', 'g'] } }}
     
     it "finds a standard key" do
-      expect(Dottie.has_key?(hash, 'a')).to be_true
+      expect(Dottie.has_key?(hash, 'a')).to be true
     end
     it "does not find a missing standard key" do
-      expect(Dottie.has_key?(hash, 'x')).to be_false
+      expect(Dottie.has_key?(hash, 'x')).to be false
     end
     it "finds a Dottie key (Hash value)" do
-      expect(Dottie.has_key?(hash, 'c.d')).to be_true
+      expect(Dottie.has_key?(hash, 'c.d')).to be true
     end
     it "finds a Dottie key (Array element)" do
-      expect(Dottie.has_key?(hash, 'c.d[0]')).to be_true
+      expect(Dottie.has_key?(hash, 'c.d[0]')).to be true
     end
     it "does not find a missing Dottie key (first part is a String)" do
-      expect(Dottie.has_key?(hash, 'a.b')).to be_false
+      expect(Dottie.has_key?(hash, 'a.b')).to be false
     end
     it "does not find a missing Dottie key (first part exists)" do
-      expect(Dottie.has_key?(hash, 'c.x')).to be_false
+      expect(Dottie.has_key?(hash, 'c.x')).to be false
     end
     it "does not find a missing Dottie key (outside Array bounds)" do
-      expect(Dottie.has_key?(hash, 'c.d[4]')).to be_false
+      expect(Dottie.has_key?(hash, 'c.d[4]')).to be false
     end
     it "does not find a missing Dottie key (no part exists)" do
-      expect(Dottie.has_key?(hash, 'x.y')).to be_false
+      expect(Dottie.has_key?(hash, 'x.y')).to be false
     end
   end
   
@@ -448,22 +448,22 @@ describe Dottie do
     
     it 'recognizes a dotted key' do
       key = 'a.b.c'
-      expect(Dottie.dottie_key?(key)).to be_true
+      expect(Dottie.dottie_key?(key)).to be true
     end
     
     it 'recognizes a bracketed key' do
       key = 'a[0]b'
-      expect(Dottie.dottie_key?(key)).to be_true
+      expect(Dottie.dottie_key?(key)).to be true
     end
     
     it 'recognizes an array as a Dottie key' do
       key = ['a', 'b', 'c']
-      expect(Dottie.dottie_key?(key)).to be_true
+      expect(Dottie.dottie_key?(key)).to be true
     end
     
     it 'does not recognize a normal key' do
       key = 'a_b_c'
-      expect(Dottie.dottie_key?(key)).to be_false
+      expect(Dottie.dottie_key?(key)).to be false
     end
     
   end
